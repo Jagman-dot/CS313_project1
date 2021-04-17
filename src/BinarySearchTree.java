@@ -1,15 +1,16 @@
+@SuppressWarnings("SuspiciousNameCombination")
 public class BinarySearchTree {
 
     public static class Node{
 
-        int data;
+        int key;
         Node left;
         Node right;
         Node parent;
 
 
-        public Node(int data){
-            this.data = data;
+        public Node(int key){
+            this.key = key;
             this.left = null;
             this.right = null;
             this.parent = null;
@@ -23,18 +24,12 @@ public class BinarySearchTree {
         root = null;
     }
 
-    // function to insert data
-    public void insert(int data){
+    // function to insert key
+    public void insert(int key){
 
-        Node node = new Node(data);
+        Node node = new Node(key);
+        insertNode(node);
 
-        //if the tree is empty
-        if(root == null){
-            root = node;
-            node.parent = null;
-        } else{
-            insertNode(node);
-        }
     }
 
     private void insertNode(Node node){
@@ -43,8 +38,8 @@ public class BinarySearchTree {
         Node x = root;
 
         while(x != null){
-            y=x;
-            if(node.data < x.data){
+            y = x;
+            if(node.key < x.key){
                 x = x.left;
             } else{
                 x=x.right;
@@ -52,14 +47,23 @@ public class BinarySearchTree {
         }
 
         node.parent = y;
+
+        if(y == null){
+            root = node;
+        } else if(node.key < y.key){
+            y.left = node;
+        } else{
+            y.right = node;
+        }
+
     }
 
-    public void traveraInOrder(Node node){
+    public void traverseInOrder(Node node){
 
         if(node != null){
-            traveraInOrder(node.left);
-            System.out.print(" " + node.data);
-            traveraInOrder(node.right);
+            traverseInOrder(node.left);
+            System.out.print(" " + node.key);
+            traverseInOrder(node.right);
         }
 
     }

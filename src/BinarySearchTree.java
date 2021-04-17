@@ -106,6 +106,25 @@ public class BinarySearchTree {
     }
 
     //TODO Successor function
+    //smallest node that is larger than
+    // we want to jus go the right sub-tree
+    // and then to the left
+    public Node successor(Node x){
+
+        //case 1: starting at root and right subtree has a left subtree
+        if(x.right != null){
+            return min(x.right);
+        }
+
+        //Case 2:
+        Node y = x.parent;
+        while(y != null && x == y.right){
+            x = y;
+            y = y.parent;
+        }
+
+        return y;
+    }
 
 
 

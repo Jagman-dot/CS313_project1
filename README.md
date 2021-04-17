@@ -8,9 +8,9 @@ implementation of a dictionary in the Library of Efficient of Data Structures an
 Algorithms (LEDA) providing implementations of a variety of algorithms and
 data structures, used in Java.
 
-##2 Treap Data Structure
+## 2 Treap Data Structure
 
-###2.1 Definition
+### 2.1 Definition
 A **treap** is a binary-search tree with a modified way of ordering nodes. As
 usual, each node x in the tree has the following field:
 
@@ -32,7 +32,7 @@ The first two define the binary-search tree properties, the last defines the
 min-heap property.
 
 
-###2.2 Operations
+### 2.2 Operations
 
 A treap, like every other balanced binary-search tree, supports the standard
 operations:
@@ -69,9 +69,9 @@ cases:
       order, resulting in one of the previous cases. In this final case, the swap may violate the heap-ordering 
       property for z, so additional rotations may need to be performed to restore this property.
 
-##3 Problem
+## 3 Problem
 
-###3.1 Implementation
+### 3.1 Implementation
 
 Implement the above data structure in Java. For the most part, it has the same
 basic structure as the standard binary-search tree we have discussed in class.
@@ -79,7 +79,7 @@ The main differences occur in the node class with the addition of a new attribut
 x.priority, in the modification algorithms, **Insert**(T,x) and **Delete**(T,x).
 
 
-###3.2 Algorithmic Problem Solving
+### 3.2 Algorithmic Problem Solving
 
 Using the treap, design an algorithm to solve the following problem:
 
@@ -91,7 +91,7 @@ Using the treap, design an algorithm to solve the following problem:
 
     Output: The number of subarrays whose average is note less than k.
     
-###3.3 Example
+### 3.3 Example
 
     Input: 5,4, [5,2,4,5,1] 
     Output: 5
@@ -99,9 +99,9 @@ Using the treap, design an algorithm to solve the following problem:
     The subarrays that can be constructed from [5,2,4,5,1] that have average 
     greater than or equal to 4 are [5], [4], [4,5], [5], [5,2,4,5].
     
-##4 Program Specifications
+## 4 Program Specifications
 
-###4.1 Functionality
+### 4.1 Functionality
 
 Your program should read in a textfile from the command line and parse the
 input as described above. The file will be structured where the every odd line
@@ -113,14 +113,14 @@ one problem, your program should print to the console both the input and the
 output as described in example 3.3, and continue until it as processed all the
 problems on the textfile.
 
-###4.2 Java Libraries
-
+### 4.2 Java Libraries
+ 
 In order to assign a random priority to every node, you will need to utilize the
 following library:
 https://docs.oracle.com/javase/8/docs/api/java/util/Random.html.
 
-###4.3 Submission
+### 4.3 Submission
 All files will be submitted in a zip file to blackboard.
 
-###5 Due Date
+### 5 Due Date
 Please submit the final project by 11:59 PM 4/21/2021.

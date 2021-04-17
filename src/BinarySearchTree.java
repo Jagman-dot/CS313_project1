@@ -78,7 +78,6 @@ public class BinarySearchTree {
         if(x == null || x.key == key){
             return x;
         }
-
         if(key < x.key){
             return search(x.left,key);
         } else {
@@ -86,12 +85,31 @@ public class BinarySearchTree {
         }
     }
 
+    public Node max(Node x){
+
+        while(x.right != null){
+            x = x.right;
+        }
+
+        return x;
+    }
 
 
+    // returns the min Node, starts at root node
+    public Node min(Node x){
 
-    //TODO Max function
-    //TODO Min function
+        while(x.left != null){
+            x = x.left;
+        }
+
+        return x;
+    }
+
     //TODO Successor function
+
+
+
+
     //TODO Predecessor function
 
 

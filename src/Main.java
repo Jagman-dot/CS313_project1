@@ -13,7 +13,9 @@ public class Main {
         tree.insert(9);
 
         tree.traverseInOrder(tree.root);
-
+        System.out.println();
+        System.out.println(tree.min(tree.root).key);
+        System.out.println(tree.max(tree.root).key);
 
 
 

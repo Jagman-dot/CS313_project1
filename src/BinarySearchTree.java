@@ -68,5 +68,34 @@ public class BinarySearchTree {
 
     }
 
+    //TODO Delete function
+
+
+
+    //search starts from the root
+    public Node search(Node x, int key){
+
+        if(x == null || x.key == key){
+            return x;
+        }
+
+        if(key < x.key){
+            return search(x.left,key);
+        } else {
+            return search(x.right,key);
+        }
+    }
+
+
+
+
+    //TODO Max function
+    //TODO Min function
+    //TODO Successor function
+    //TODO Predecessor function
+
+
+
+
 
 }

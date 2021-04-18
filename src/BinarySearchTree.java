@@ -101,11 +101,9 @@ public class BinarySearchTree {
         while(x.left != null){
             x = x.left;
         }
-
         return x;
     }
 
-    //TODO Successor function
     //smallest node that is larger than
     // we want to jus go the right sub-tree
     // and then to the left
@@ -127,10 +125,24 @@ public class BinarySearchTree {
     }
 
 
-
-
     //TODO Predecessor function
+    public Node predecessor(Node x){
 
+        //case 1: starting at root and right subtree has a left subtree
+        if(x.left != null){
+            return max(x.left);
+        }
+
+        //Case 2:
+        Node y = x.parent;
+
+        while(y != null && x == y.left){
+            x = y;
+            y = y.parent;
+        }
+
+        return y;
+    }
 
 
 

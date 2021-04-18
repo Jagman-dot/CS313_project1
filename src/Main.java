@@ -17,8 +17,11 @@ public class Main {
         //System.out.println(tree.min(tree.root).key);
         //System.out.println(tree.max(tree.root).key);
         System.out.println(tree.successor(tree.root).key);
+        System.out.println(tree.predecessor(tree.root).key);
+        System.out.println(tree.successor(tree.root.left.right).key);
 
-       System.out.println(tree.successor(tree.root.left.right).key);
+
+        System.out.println(tree.predecessor(tree.root.left.right).key);
 
 
 

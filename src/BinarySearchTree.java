@@ -15,6 +15,16 @@ public class BinarySearchTree {
             this.right = null;
             this.parent = null;
         }
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "key=" + key +
+                    ", left=" + left +
+                    ", right=" + right +
+                    ", parent=" + parent +
+                    '}';
+        }
     }
 
     Node root;
@@ -26,7 +36,6 @@ public class BinarySearchTree {
 
     // function to insert key
     public void insert(int key){
-
         Node node = new Node(key);
         insertNode(node);
 
@@ -90,7 +99,6 @@ public class BinarySearchTree {
         while(x.right != null){
             x = x.right;
         }
-
         return x;
     }
 
@@ -114,7 +122,6 @@ public class BinarySearchTree {
             return min(x.right);
         }
 
-        //Case 2:
         Node y = x.parent;
         while(y != null && x == y.right){
             x = y;
@@ -124,8 +131,6 @@ public class BinarySearchTree {
         return y;
     }
 
-
-    //TODO Predecessor function
     public Node predecessor(Node x){
 
         //case 1: starting at root and right subtree has a left subtree
@@ -133,18 +138,62 @@ public class BinarySearchTree {
             return max(x.left);
         }
 
-        //Case 2:
         Node y = x.parent;
 
         while(y != null && x == y.left){
             x = y;
             y = y.parent;
         }
-
         return y;
     }
 
+    @Override
+    public String toString() {
+        return "BinarySearchTree{" +
+                "root=" + root +
+                '}';
+    }
+
+    // inorder to delete we jus break the link from its parent
+    public void delete(Node x){
+
+       //case 1: x does not have a left node
+       if(x.left == null){
+           Transplant(x,x.right);
+       }
+       // case 2: x doesn't have a right node
+       else if(x.right == null){
+           Transplant(x,x.left);
+       }else {
+           //case 3: if x has both left and right node
+           Node y = min(x.right);
+
+           if (y.parent != x) {
+               Transplant(y,y.right);
+               y.right = x.right;
+               y.right.parent = y;
+           }
+           Transplant(x,y);
+           y.left = x.left;
+           y.left.parent = y;
+       }
+    }
+
+    public void Transplant(Node u, Node v){
+
+        if(u.parent == null){
+            this.root = v;
+        } else if(u == u.parent.left){
+            u.parent.left = v;
+        }else{
+            u.parent.right = v;
+        }
+
+        if(v != null){
+            v.parent = u.parent;
+        }
 
 
+    }
 
 }

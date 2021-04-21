@@ -1,4 +1,3 @@
-@SuppressWarnings("SuspiciousNameCombination")
 public class BinarySearchTree {
 
     public static class Node{

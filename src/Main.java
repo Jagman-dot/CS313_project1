@@ -23,7 +23,7 @@ public class Main {
 //
 //        System.out.println(tree.predecessor(tree.root.left.right).key);
 
-
+        System.out.println(RandomPriority.random());
 
     }
 }

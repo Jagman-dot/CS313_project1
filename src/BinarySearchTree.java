@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class BinarySearchTree {
 
     public static class Node{
@@ -6,23 +8,16 @@ public class BinarySearchTree {
         Node left;
         Node right;
         Node parent;
+        double priority;
 
+        Random random = new Random();
 
         public Node(int key){
             this.key = key;
             this.left = null;
             this.right = null;
             this.parent = null;
-        }
-
-        @Override
-        public String toString() {
-            return "Node{" +
-                    "key=" + key +
-                    ", left=" + left +
-                    ", right=" + right +
-                    ", parent=" + parent +
-                    '}';
+            this.priority = random.nextDouble();
         }
     }
 
@@ -36,24 +31,17 @@ public class BinarySearchTree {
     // function to insert key
     public void insert(int key){
         Node node = new Node(key);
-        insertNode(node);
-
+        insertAtGivenNode(node);
     }
 
-    private void insertNode(Node node){
+    //TODO figure out the min-heap property for this method
+    public void insertAtGivenNode(Node node){
 
         Node y = null;
-        Node x = root;
 
-        while(x != null){
-            y = x;
-            if(node.key < x.key){
-                x = x.left;
-            } else{
-                x=x.right;
-            }
+        if(root != null) {
+             y = search(root, node.key);
         }
-
         node.parent = y;
 
         if(y == null){
@@ -63,7 +51,6 @@ public class BinarySearchTree {
         } else{
             y.right = node;
         }
-
     }
 
     public void traverseInOrder(Node node){
@@ -73,20 +60,21 @@ public class BinarySearchTree {
             System.out.print(" " + node.key);
             traverseInOrder(node.right);
         }
-
     }
-
-    //TODO Delete function
-
-
 
     //search starts from the root
     public Node search(Node x, int key){
 
-        if(x == null || x.key == key){
+        if((key < x.key && x.left == null) || x.key == key){
+            return x;
+        } else if((key > x.key && x.right == null) || x.key == key){
             return x;
         }
+
         if(key < x.key){
+
+
+
             return search(x.left,key);
         } else {
             return search(x.right,key);
@@ -146,12 +134,6 @@ public class BinarySearchTree {
         return y;
     }
 
-    @Override
-    public String toString() {
-        return "BinarySearchTree{" +
-                "root=" + root +
-                '}';
-    }
 
     // inorder to delete we jus break the link from its parent
     public void delete(Node x){
@@ -191,8 +173,12 @@ public class BinarySearchTree {
         if(v != null){
             v.parent = u.parent;
         }
-
-
     }
 
+    @Override
+    public String toString() {
+        return "BinarySearchTree{" +
+                "root=" + root+
+                '}';
+    }
 }

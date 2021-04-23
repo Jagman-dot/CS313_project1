@@ -14,16 +14,11 @@ public class Main {
 
         tree.traverseInOrder(tree.root);
         System.out.println();
-        //System.out.println(tree.min(tree.root).key);
-        //System.out.println(tree.max(tree.root).key);
-//        System.out.println(tree.successor(tree.root).key);
-//        System.out.println(tree.predecessor(tree.root).key);
-//        System.out.println(tree.successor(tree.root.left.right).key);
-//
-//
-//        System.out.println(tree.predecessor(tree.root.left.right).key);
 
-        System.out.println(RandomPriority.random());
+        System.out.println(tree.root.priority);
+
+        System.out.println(tree.search(tree.root, 12).key);
+
 
     }
 }

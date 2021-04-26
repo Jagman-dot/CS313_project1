@@ -1,4 +1,5 @@
-@SuppressWarnings("SuspiciousNameCombination")
+import java.util.Random;
+
 public class BinarySearchTree {
 
     public static class Node{
@@ -7,23 +8,16 @@ public class BinarySearchTree {
         Node left;
         Node right;
         Node parent;
+        double priority;
 
+        Random random = new Random();
 
         public Node(int key){
             this.key = key;
             this.left = null;
             this.right = null;
             this.parent = null;
-        }
-
-        @Override
-        public String toString() {
-            return "Node{" +
-                    "key=" + key +
-                    ", left=" + left +
-                    ", right=" + right +
-                    ", parent=" + parent +
-                    '}';
+            this.priority = random.nextDouble();
         }
     }
 
@@ -36,34 +30,60 @@ public class BinarySearchTree {
 
     // function to insert key
     public void insert(int key){
-        Node node = new Node(key);
-        insertNode(node);
-
+        Node node = new Node(key); // creates a node with that number
+        insertAtGivenNode(node);
     }
 
-    private void insertNode(Node node){
+    //TODO figure out the min-heap property for this method
+    public void insertAtGivenNode(Node node){
 
         Node y = null;
-        Node x = root;
 
-        while(x != null){
-            y = x;
-            if(node.key < x.key){
-                x = x.left;
-            } else{
-                x=x.right;
-            }
+        if(root != null) {
+             y = search(root, node.key); // returns where the new node should be placed
         }
 
         node.parent = y;
 
         if(y == null){
             root = node;
+
         } else if(node.key < y.key){
             y.left = node;
         } else{
             y.right = node;
         }
+
+        priorityFixer(node);
+    }
+
+
+
+    // function to run from the bottom of the tree to the root per insertion to compare priorities to swap if needed
+    private void priorityFixer(Node x){
+
+        if (x == root) {
+            return;
+        }
+
+        if(x.priority < x.parent.priority){
+            swapPriority(x,x.parent);
+        } else {
+            priorityFixer(x.parent);
+        }
+
+    }
+
+
+
+
+    private void swapPriority(Node x, Node y){
+
+        double temp = y.priority; //store x.parent priority in a temp var
+
+        y.priority = x.priority; // replace x.parent priority with x's priority
+
+        x.priority = temp; // replace x priority with temp var..... the priorities now are swaped
 
     }
 
@@ -71,22 +91,20 @@ public class BinarySearchTree {
 
         if(node != null){
             traverseInOrder(node.left);
-            System.out.print(" " + node.key);
+            System.out.print(" " + node.key + ":" + node.priority + ", ");
             traverseInOrder(node.right);
         }
-
     }
-
-    //TODO Delete function
-
-
 
     //search starts from the root
     public Node search(Node x, int key){
 
-        if(x == null || x.key == key){
+        if((key < x.key && x.left == null) || x.key == key){
+            return x;
+        } else if((key > x.key && x.right == null) || x.key == key){
             return x;
         }
+
         if(key < x.key){
             return search(x.left,key);
         } else {
@@ -147,12 +165,6 @@ public class BinarySearchTree {
         return y;
     }
 
-    @Override
-    public String toString() {
-        return "BinarySearchTree{" +
-                "root=" + root +
-                '}';
-    }
 
     // inorder to delete we jus break the link from its parent
     public void delete(Node x){
@@ -192,8 +204,12 @@ public class BinarySearchTree {
         if(v != null){
             v.parent = u.parent;
         }
-
-
     }
 
+    @Override
+    public String toString() {
+        return "BinarySearchTree{" +
+                "root=" + root+
+                '}';
+    }
 }

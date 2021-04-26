@@ -12,6 +12,8 @@ public class Main {
         tree.insert(9);
         tree.insert(11);
 
+        tree.insert(4);
+
         tree.traverseInOrder(tree.root);
         System.out.println();
 
@@ -20,5 +22,8 @@ public class Main {
         System.out.println(tree.search(tree.root, 12).key);
 
 
+
+
     }
 }
+

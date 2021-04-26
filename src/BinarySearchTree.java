@@ -30,7 +30,7 @@ public class BinarySearchTree {
 
     // function to insert key
     public void insert(int key){
-        Node node = new Node(key);
+        Node node = new Node(key); // creates a node with that number
         insertAtGivenNode(node);
     }
 
@@ -40,24 +40,58 @@ public class BinarySearchTree {
         Node y = null;
 
         if(root != null) {
-             y = search(root, node.key);
+             y = search(root, node.key); // returns where the new node should be placed
         }
+
         node.parent = y;
 
         if(y == null){
             root = node;
+
         } else if(node.key < y.key){
             y.left = node;
         } else{
             y.right = node;
         }
+
+        priorityFixer(node);
+    }
+
+
+
+    // function to run from the bottom of the tree to the root per insertion to compare priorities to swap if needed
+    private void priorityFixer(Node x){
+
+        if (x == root) {
+            return;
+        }
+
+        if(x.priority < x.parent.priority){
+            swapPriority(x,x.parent);
+        } else {
+            priorityFixer(x.parent);
+        }
+
+    }
+
+
+
+
+    private void swapPriority(Node x, Node y){
+
+        double temp = y.priority; //store x.parent priority in a temp var
+
+        y.priority = x.priority; // replace x.parent priority with x's priority
+
+        x.priority = temp; // replace x priority with temp var..... the priorities now are swaped
+
     }
 
     public void traverseInOrder(Node node){
 
         if(node != null){
             traverseInOrder(node.left);
-            System.out.print(" " + node.key);
+            System.out.print(" " + node.key + ":" + node.priority + ", ");
             traverseInOrder(node.right);
         }
     }
@@ -72,9 +106,6 @@ public class BinarySearchTree {
         }
 
         if(key < x.key){
-
-
-
             return search(x.left,key);
         } else {
             return search(x.right,key);

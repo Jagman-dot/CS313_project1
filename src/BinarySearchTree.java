@@ -1,5 +1,6 @@
 import java.util.Random;
 
+//TODO rename class as TREAP
 public class BinarySearchTree {
 
     public static class Node{
@@ -40,7 +41,11 @@ public class BinarySearchTree {
         Node y = null;
 
         if(root != null) {
-             y = search(root, node.key); // returns where the new node should be placed
+             y = search(root, node.key);// returns where the new node should be placed // if we are going insert the same element already in the tree back to back then it will go to the right, and if adding three same elements then we have to jump
+
+            if(y.right != null && y.right.key == y.key){
+                y = y.right;
+            }
         }
 
         node.parent = y;
@@ -75,8 +80,7 @@ public class BinarySearchTree {
     }
 
 
-
-
+    //
     private void swapPriority(Node x, Node y){
 
         double temp = y.priority; //store x.parent priority in a temp var
@@ -178,7 +182,9 @@ public class BinarySearchTree {
            Transplant(x,x.left);
        }else {
            //case 3: if x has both left and right node
-           Node y = min(x.right);
+           Node y = min(x.right); // here we grab the min node that will replace the node that we will delete
+           // swap the pirioites right here
+           swapPriority(y,x); // y is the node that we are keeping and x is the one that is being deleted
 
            if (y.parent != x) {
                Transplant(y,y.right);

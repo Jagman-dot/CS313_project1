@@ -18,6 +18,11 @@ public class Main {
         System.out.println();
         BTreePrinter.printNode(tree.root);
 
+        tree.root = tree.deleteNode(tree.root,10);
+        System.out.println();
+
+
+        BTreePrinter.printNode(tree.root);
     }
 }
 

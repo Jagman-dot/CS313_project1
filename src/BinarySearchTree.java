@@ -36,13 +36,11 @@ public class BinarySearchTree {
             return new Node(data);
         }
 
-        // if data is less than the root node, insert in the left subtree;
-        // otherwise, insert in the right subtree
+
         if (data < root.key)
         {
             root.left = insertNode(root.left, data);
 
-            // rotate right if heap property is violated
             if (root.left != null && root.left.priority < root.priority) {
                 root = rotateRight(root);
             }
@@ -50,7 +48,7 @@ public class BinarySearchTree {
         else {
             root.right = insertNode(root.right, data);
 
-            // rotate left if heap property is violated
+
             if (root.right != null && root.right.priority < root.priority) {
                 root = rotateLeft(root);
             }
@@ -164,46 +162,62 @@ public class BinarySearchTree {
     }
 
 
-    // inorder to delete we jus break the link from its parent
-    public void delete(Node x){
-
-       //case 1: x does not have a left node
-       if(x.left == null){
-           Transplant(x,x.right);
-       }
-       // case 2: x doesn't have a right node
-       else if(x.right == null){
-           Transplant(x,x.left);
-       }else {
-           //case 3: if x has both left and right node
-           Node y = min(x.right); // here we grab the min node that will replace the node that we will delete
-
-
-
-           if (y.parent != x) {
-               Transplant(y,y.right);
-               y.right = x.right;
-               y.right.parent = y;
-           }
-           Transplant(x,y);
-           y.left = x.left;
-           y.left.parent = y;
-       }
-    }
-
-    public void Transplant(Node u, Node v){
-
-        if(u.parent == null){
-            this.root = v;
-        } else if(u == u.parent.left){
-            u.parent.left = v;
-        }else{
-            u.parent.right = v;
+    public Node deleteNode(Node root, int key)
+    {
+        // base case: the key is not found in the tree
+        if (root == null) {
+            return null;
         }
 
-        if(v != null){
-            v.parent = u.parent;
+        // if the key is less than the root node, recur for the left subtree
+        if (key < root.key) {
+            root.left = deleteNode(root.left, key);
         }
+
+        // if the key is more than the root node, recur for the right subtree
+        else if (key > root.key) {
+            root.right = deleteNode(root.right, key);
+        }
+
+        // if the key is found
+        else {
+            // Case 1: node to be deleted has no children (it is a leaf node)
+            if (root.left == null && root.right == null)
+            {
+                // deallocate the memory and update root to null
+                root = null;
+            }
+
+            // Case 2: node to be deleted has two children
+            else if (root.left != null && root.right != null)
+            {
+                // if the left child has less priority than the right child
+                if (root.left.priority > root.right.priority)
+                {
+                    // call `rotateLeft()` on the root
+                    root = rotateLeft(root);
+
+                    // recursively delete the left child
+                    root.left = deleteNode(root.left, key);
+                }
+                else {
+                    // call `rotateRight()` on the root
+                    root = rotateRight(root);
+
+                    // recursively delete the right child
+                    root.right = deleteNode(root.right, key);
+                }
+            }
+
+            // Case 3: node to be deleted has only one child
+            else {
+                // choose a child node
+                Node child = (root.left != null)? root.left: root.right;
+                root = child;
+            }
+        }
+
+        return root;
     }
 
     @Override

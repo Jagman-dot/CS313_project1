@@ -6,26 +6,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-//        BinarySearchTree tree = new BinarySearchTree();
-//
-//        tree.insert(2);
-//        tree.insert(6);
-//        tree.insert(5);
-//        tree.insert(8);
-//
-//        tree.traverseInOrder(tree.root);
-//
-////        System.out.println(tree.root.key);
-////
-////        System.out.println(tree.root.left.key);
-////        System.out.println(tree.root.right.key);
-//
-//        System.out.println();
-//        BTreePrinter.printNode(tree.root);
-//
-//
-//        System.out.println();
-
         BinarySearchTree tree = new BinarySearchTree();
 
         int [] keys = {5,2,1,4,9,8,10};

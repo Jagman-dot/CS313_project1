@@ -32,10 +32,13 @@ public class BinarySearchTree {
     // function to insert key
     public void insert(int key){
         Node node = new Node(key); // creates a node with that number
-        insertAtGivenNode(node);
+//        insertAtGivenNode(node);
+
+        insertNode(root,node);
+
     }
 
-    //TODO figure out the min-heap property for this method
+    //TODO rotations instead of
     public void insertAtGivenNode(Node node){
 
         Node y = null;
@@ -55,12 +58,173 @@ public class BinarySearchTree {
 
         } else if(node.key < y.key){
             y.left = node;
+
+            if (node.priority < node.parent.priority){
+                rotateRight(node);
+            }
+
         } else{
             y.right = node;
+
+            if (node.priority < node.parent.priority){
+                rotateLeft(node);
+            }
+        }
+    }
+
+
+    //recursive insert function
+    public Node insertNode(Node root, Node x) {
+
+        if (root == null) {
+            this.root = x;
+            return this.root;
         }
 
-        priorityFixer(node);
+        if (x.key < root.key) {
+
+            Node y = insertNode(root.left, x);
+
+            x.parent = y;
+            y.left = x;
+
+            if (x.priority < x.parent.priority) {
+                rotateRight(x);
+            }
+
+            return x;
+
+        } else {
+
+            Node y = insertNode(root.right, x);
+            x.parent = y;
+            y.right = x;
+
+            if (x.priority < x.parent.priority) {
+
+                rotateLeft(x);
+
+            }
+        }
+
+        return x;
     }
+
+    public Node insertNode(Node root, int data)
+    {
+        // base case
+        if (root == null) {
+            return new Node(data);
+        }
+
+        // if data is less than the root node, insert in the left subtree;
+        // otherwise, insert in the right subtree
+        if (data < root.key)
+        {
+            root.left = insertNode(root.left, data);
+
+            // rotate right if heap property is violated
+            if (root.left != null && root.left.priority < root.priority) {
+                root = rotateRight(root);
+            }
+        }
+        else {
+            root.right = insertNode(root.right, data);
+
+            // rotate left if heap property is violated
+            if (root.right != null && root.right.priority < root.priority) {
+                root = rotateLeft(root);
+            }
+        }
+
+        return root;
+    }
+
+
+
+    public void rotateRightold(Node x) {
+        Node y = copy(x);
+        if (y.parent != null) {
+            if (y.parent.left == x) {
+                y.parent.left = y;
+            } else {
+                y.parent.right = y;
+            }
+        }
+        x.left = y.right;
+        if (x.left != null) {
+            x.left.parent = x;
+        }
+        x.parent = y;
+        y.right = x;
+        if (x == root){
+            root = y;
+            root.parent = null;
+        }
+    }
+
+   public void rotateLeftold(Node x) {
+        Node y = copy(x);
+        if (y.parent != null) {
+            if (y.parent.left == x) {
+                y.parent.left = y;
+            } else {
+                y.parent.right = y;
+            }
+        }
+        x.right = y.left;
+        if (x.right != null) {
+            x.right.parent = x;
+        }
+        x.parent = y;
+        y.left = x;
+        if (x == root) { root = y; root.parent = null; }
+    }
+
+
+    public Node rotateLeft(Node root)
+    {
+        Node R = root.right;
+        Node X = root.right.left;
+
+        // rotate
+        R.left = root;
+        root.right = X;
+
+        // set a new root
+        return R;
+    }
+
+    public Node rotateRight(Node root)
+    {
+        Node L = root.left;
+        Node Y = root.left.right;
+
+        // rotate
+        L.right = root;
+        root.left = Y;
+
+        // set a new root
+        return L;
+    }
+
+
+
+//    private void insertGivenNode(Node root, Node node){
+//
+//
+//        //if the root is null, then the tree is empty and the new node is going to be the root
+//        if(root == null){
+//            root = node;
+//
+//        } else if(node.key < root.key){ //recurs the tree and figure out if the node goes on the left side of the tree
+//
+//            root.left = insertGivenNode(root.left, node);
+//
+//        }
+//
+//
+//    }
 
 
 
@@ -72,15 +236,49 @@ public class BinarySearchTree {
         }
 
         if(x.priority < x.parent.priority){
-            swapPriority(x,x.parent);
+
+            swapNodes(x,x.parent);
+
+
         } else {
             priorityFixer(x.parent);
+        }
+
+        // NEW Swap Node function
+
+        /*
+                // copy Node y into a Node temp, for this we will need a Node copy function
+
+        // x is the left child of Y and now we have to reverse this relationship and y will become the right child of x
+
+
+        }
+         */
+
+    }
+
+
+    //this should swap nodes
+    private void swapNodes(Node x, Node y) {
+
+        if(x.key < y.key){
+            x.parent = y.parent;
+            y.left = x.right;
+            x.right = y;
+            y.parent = x;
+        } else if(x.key > y.key){
+
+            x.parent = y.parent;
+            y.right = x.left;
+            x.left = y;
+            y.parent = x;
         }
 
     }
 
 
-    //
+
+        //TODO change this swap node instead
     private void swapPriority(Node x, Node y){
 
         double temp = y.priority; //store x.parent priority in a temp var
@@ -217,5 +415,16 @@ public class BinarySearchTree {
         return "BinarySearchTree{" +
                 "root=" + root+
                 '}';
+    }
+
+    private Node copy(Node x){
+
+        Node y = new Node(x.key);
+        y.priority = x.priority;
+        y.right = x.right;
+        y.parent = x.parent;
+        y.left = x.left;
+
+        return y;
     }
 }

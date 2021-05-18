@@ -1,5 +1,6 @@
 import java.util.Random;
 
+//TODO rename class as TREAP
 public class BinarySearchTree {
 
     public static class Node{
@@ -28,63 +29,58 @@ public class BinarySearchTree {
         root = null;
     }
 
-    // function to insert key
-    public void insert(int key){
-        Node node = new Node(key); // creates a node with that number
-        insertAtGivenNode(node);
+    public Node insertNode(Node root, int data)
+    {
+        // base case
+        if (root == null) {
+            return new Node(data);
+        }
+
+
+        if (data < root.key)
+        {
+            root.left = insertNode(root.left, data);
+
+            if (root.left != null && root.left.priority < root.priority) {
+                root = rotateRight(root);
+            }
+        }
+        else {
+            root.right = insertNode(root.right, data);
+
+
+            if (root.right != null && root.right.priority < root.priority) {
+                root = rotateLeft(root);
+            }
+        }
+
+        return root;
     }
 
-    //TODO figure out the min-heap property for this method
-    public void insertAtGivenNode(Node node){
+    public Node rotateLeft(Node root)
+    {
+        Node R = root.right;
+        Node X = root.right.left;
 
-        Node y = null;
+        // rotate
+        R.left = root;
+        root.right = X;
 
-        if(root != null) {
-             y = search(root, node.key); // returns where the new node should be placed
-        }
-
-        node.parent = y;
-
-        if(y == null){
-            root = node;
-
-        } else if(node.key < y.key){
-            y.left = node;
-        } else{
-            y.right = node;
-        }
-
-        priorityFixer(node);
+        // set a new root
+        return R;
     }
 
+    public Node rotateRight(Node root)
+    {
+        Node L = root.left;
+        Node Y = root.left.right;
 
+        // rotate
+        L.right = root;
+        root.left = Y;
 
-    // function to run from the bottom of the tree to the root per insertion to compare priorities to swap if needed
-    private void priorityFixer(Node x){
-
-        if (x == root) {
-            return;
-        }
-
-        if(x.priority < x.parent.priority){
-            swapPriority(x,x.parent);
-        } else {
-            priorityFixer(x.parent);
-        }
-
-    }
-
-
-
-
-    private void swapPriority(Node x, Node y){
-
-        double temp = y.priority; //store x.parent priority in a temp var
-
-        y.priority = x.priority; // replace x.parent priority with x's priority
-
-        x.priority = temp; // replace x priority with temp var..... the priorities now are swaped
-
+        // set a new root
+        return L;
     }
 
     public void traverseInOrder(Node node){
@@ -96,7 +92,7 @@ public class BinarySearchTree {
         }
     }
 
-    //search starts from the root
+
     public Node search(Node x, int key){
 
         if((key < x.key && x.left == null) || x.key == key){
@@ -166,45 +162,94 @@ public class BinarySearchTree {
     }
 
 
-    // inorder to delete we jus break the link from its parent
-    public void delete(Node x){
-
-       //case 1: x does not have a left node
-       if(x.left == null){
-           Transplant(x,x.right);
-       }
-       // case 2: x doesn't have a right node
-       else if(x.right == null){
-           Transplant(x,x.left);
-       }else {
-           //case 3: if x has both left and right node
-           Node y = min(x.right);
-
-           if (y.parent != x) {
-               Transplant(y,y.right);
-               y.right = x.right;
-               y.right.parent = y;
-           }
-           Transplant(x,y);
-           y.left = x.left;
-           y.left.parent = y;
-       }
-    }
-
-    public void Transplant(Node u, Node v){
-
-        if(u.parent == null){
-            this.root = v;
-        } else if(u == u.parent.left){
-            u.parent.left = v;
-        }else{
-            u.parent.right = v;
+    public Node deleteNode(Node root, int key)
+    {
+        // base case: the key is not found in the tree
+        if (root == null) {
+            return null;
         }
 
-        if(v != null){
-            v.parent = u.parent;
+        // if the key is less than the root node, recur for the left subtree
+        if (key < root.key) {
+            root.left = deleteNode(root.left, key);
         }
+
+        // if the key is more than the root node, recur for the right subtree
+        else if (key > root.key) {
+            root.right = deleteNode(root.right, key);
+        }
+
+        // if the key is found
+        else {
+            // Case 1: node to be deleted has no children (it is a leaf node)
+            if (root.left == null && root.right == null)
+            {
+                // deallocate the memory and update root to null
+                root = null;
+            }
+
+            // Case 2: node to be deleted has two children
+            else if (root.left != null && root.right != null)
+            {
+                // if the left child has less priority than the right child
+                if (root.left.priority > root.right.priority)
+                {
+                    // call `rotateLeft()` on the root
+                    root = rotateLeft(root);
+
+                    // recursively delete the left child
+                    root.left = deleteNode(root.left, key);
+                }
+                else {
+                    // call `rotateRight()` on the root
+                    root = rotateRight(root);
+
+                    // recursively delete the right child
+                    root.right = deleteNode(root.right, key);
+                }
+            }
+
+            // Case 3: node to be deleted has only one child
+            else {
+                // choose a child node
+                Node child = (root.left != null)? root.left: root.right;
+                root = child;
+            }
+        }
+
+        return root;
     }
+
+    public void averageGreater(int [] array, int k){
+
+        int sum = 0;
+        int avg;
+        for(int i =0; i < array.length; i++){ //i = 2 which is 4
+            sum = array[i]; // sum = 4
+
+            if(array[i] >= k){
+                System.out.println("[" + array[i] + "],");
+            }
+
+            for (int j = i +1; j < array.length; j++){ // j = 3 which is 5
+
+                sum = sum + array[j];
+                avg = sum / ((j - i)+1);
+
+                if(avg >= k){
+                    System.out.print("[");
+                    for (int l = i; l <= j; l++){
+                        System.out.print(array[l] + ",");
+                    }
+
+                    System.out.println("]");
+                }
+            }
+
+        }
+
+    }
+
 
     @Override
     public String toString() {

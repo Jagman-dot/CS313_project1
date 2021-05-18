@@ -1,6 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Random;
 
-//TODO rename class as TREAP
 public class BinarySearchTree {
 
     public static class Node{
@@ -209,15 +211,24 @@ public class BinarySearchTree {
 
     public void averageGreater(int [] array, int k){
 
+        System.out.print("Given input: ");
+        System.out.print("[");
+        for (int i =0; i < array.length; i++){
+            System.out.print(array[i]);
+            if(i != array.length - 1){
+                System.out.print( ", ");
+            }
+        }
+        System.out.print("]");
+
         int sum = 0;
         int avg;
         int total = 0;
-        System.out.println("Here are the sub-arrays with average greater than: " + k);
+        System.out.println();
+        System.out.println("\nHere are the sub-arrays with average greater than: " + k);
 
         for(int i =0; i < array.length; i++){ //i = 2 which is 4
             sum = array[i]; // sum = 4
-
-
 
             if(array[i] >= k){
                 System.out.println("[" + array[i] + "],");
@@ -251,9 +262,50 @@ public class BinarySearchTree {
         System.out.println();
         System.out.println();
         System.out.println("----------------------------------------------------------------");
-
     }
 
+    public void readInputFile(String file) throws IOException {
+
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String currentString;
+
+        // n = length of array and k = target avg
+        int n = 0, k = 0;
+
+        //empty array to catch all of the values input file
+        int[] keys;
+
+        while ((currentString = reader.readLine()) != null) {
+
+            if (currentString.startsWith("[")) {
+
+                keys = new int[n]; // this will create a array based on n that is in the input file
+
+                currentString = currentString.replace("[", ""); // remove the front brackets
+                currentString = currentString.replace("]", ""); // remove the back brackets
+                String[] newString = currentString.split("[ , ]");
+                for (int i = 0; i < newString.length; i++) {
+
+                    keys[i] = Integer.parseInt(newString[i]);
+                }
+
+                BinarySearchTree tree = new BinarySearchTree();
+
+                for (int key : keys) {
+                    tree.root = tree.insertNode(tree.root, key);
+                }
+
+                tree.averageGreater(keys,k);
+
+            }else {
+                char[] charArray = currentString.toCharArray();
+
+                n = Integer.parseInt(String.valueOf(charArray[0]));
+                k = Integer.parseInt(String.valueOf(charArray[2]));
+            }
+
+        }
+    }
 
     @Override
     public String toString() {

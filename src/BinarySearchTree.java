@@ -220,6 +220,37 @@ public class BinarySearchTree {
         return root;
     }
 
+    public void averageGreater(int [] array, int k){
+
+        int sum = 0;
+        int avg;
+        for(int i =0; i < array.length; i++){ //i = 2 which is 4
+            sum = array[i]; // sum = 4
+
+            if(array[i] >= k){
+                System.out.println("[" + array[i] + "],");
+            }
+
+            for (int j = i +1; j < array.length; j++){ // j = 3 which is 5
+
+                sum = sum + array[j];
+                avg = sum / ((j - i)+1);
+
+                if(avg >= k){
+                    System.out.print("[");
+                    for (int l = i; l <= j; l++){
+                        System.out.print(array[l] + ",");
+                    }
+
+                    System.out.println("]");
+                }
+            }
+
+        }
+
+    }
+
+
     @Override
     public String toString() {
         return "BinarySearchTree{" +

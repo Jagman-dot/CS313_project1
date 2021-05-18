@@ -25,10 +25,10 @@ public class Main {
 
                 keys = new int[n]; // this will create a array based on n that is in the input file
 
-                //lets slpit the string for [ , ]
 
-                currentString = currentString.replace("[","");
-                currentString = currentString.replace("]","");
+
+                currentString = currentString.replace("[",""); // remove the front brackets
+                currentString = currentString.replace("]",""); // remove the back brackets
                 String [] newString = currentString.split("[ , ]");
                 for(int i =0; i < newString.length;i++){
 
@@ -43,6 +43,7 @@ public class Main {
                 }
 
                 BTreePrinter.printNode(tree.root);
+
 
             } else {
                 char[] charArray = currentString.toCharArray();

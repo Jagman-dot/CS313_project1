@@ -164,47 +164,34 @@ public class BinarySearchTree {
 
     public Node deleteNode(Node root, int key)
     {
-        // base case: the key is not found in the tree
         if (root == null) {
             return null;
         }
 
-        // if the key is less than the root node, recur for the left subtree
         if (key < root.key) {
             root.left = deleteNode(root.left, key);
         }
 
-        // if the key is more than the root node, recur for the right subtree
         else if (key > root.key) {
             root.right = deleteNode(root.right, key);
         }
 
-        // if the key is found
         else {
-            // Case 1: node to be deleted has no children (it is a leaf node)
             if (root.left == null && root.right == null)
             {
-                // deallocate the memory and update root to null
                 root = null;
             }
 
-            // Case 2: node to be deleted has two children
             else if (root.left != null && root.right != null)
             {
-                // if the left child has less priority than the right child
                 if (root.left.priority > root.right.priority)
                 {
-                    // call `rotateLeft()` on the root
                     root = rotateLeft(root);
-
-                    // recursively delete the left child
                     root.left = deleteNode(root.left, key);
                 }
                 else {
-                    // call `rotateRight()` on the root
                     root = rotateRight(root);
 
-                    // recursively delete the right child
                     root.right = deleteNode(root.right, key);
                 }
             }
@@ -224,11 +211,17 @@ public class BinarySearchTree {
 
         int sum = 0;
         int avg;
+        int total = 0;
+        System.out.println("Here are the sub-arrays with average greater than: " + k);
+
         for(int i =0; i < array.length; i++){ //i = 2 which is 4
             sum = array[i]; // sum = 4
 
+
+
             if(array[i] >= k){
                 System.out.println("[" + array[i] + "],");
+                total++;
             }
 
             for (int j = i +1; j < array.length; j++){ // j = 3 which is 5
@@ -237,16 +230,27 @@ public class BinarySearchTree {
                 avg = sum / ((j - i)+1);
 
                 if(avg >= k){
+                    total++;
                     System.out.print("[");
                     for (int l = i; l <= j; l++){
-                        System.out.print(array[l] + ",");
+                        System.out.print(array[l]);
+                        if(l != j){
+                            System.out.print( ", ");
+                        }
                     }
 
-                    System.out.println("]");
+                    System.out.println("],");
                 }
             }
 
         }
+
+        System.out.println("Total sub-arrays: " + total);
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println("----------------------------------------------------------------");
 
     }
 

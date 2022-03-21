@@ -122,5 +122,3 @@ https://docs.oracle.com/javase/8/docs/api/java/util/Random.html.
 ### 4.3 Submission
 All files will be submitted in a zip file to blackboard.
 
-### 5 Due Date
-Please submit the final project by 11:59 PM 4/21/2021.
